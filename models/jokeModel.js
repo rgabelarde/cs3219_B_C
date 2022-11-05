@@ -1,7 +1,11 @@
-// contactModel.js
+const { interfaces } = require('mocha');
 var mongoose = require('mongoose');
 // Setup schema
 var jokeSchema = mongoose.Schema({
+    id: {
+        type: Number,
+        required: true
+    },
     title: {
         type: String,
         required: true
