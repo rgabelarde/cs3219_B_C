@@ -36,3 +36,5 @@ app.use('/api', apiRoutes);
 app.listen(port, function () {
     console.log("Running API on port " + port);
 });
+
+module.exports = app;
