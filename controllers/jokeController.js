@@ -1,82 +1,102 @@
 // Import joke model
-var Joke = require('../models/jokeModel');
+const Joke = require('../models/jokeModel');
 
-// Handle index actions (GET)
-exports.index = function (req, res) {
-    Joke.get(function (err, jokes) {
-        if (err) {
-            res.json({
-                status: "error",
-                message: err,
+class JokeController {
+    // Get all jokes
+    static getAllJokes(req, res) {
+        Joke.get(function (err, jokes) {
+            if (err) {
+                return res.status(404).json({
+                    message: "Joke record not found",
+                });
+            } else {
+                return res.status(200).json({
+                    message: "Jokes retrieved successfully",
+                    data: jokes
+                });
+            }
+        });
+
+    }
+
+    // Get a single joke
+    static getSingleJoke = async (req, res) => {
+        const findJoke = await Joke.findOne({ id: req.params.joke_id });
+        if (findJoke) {
+            return res.status(200).json({
+                message: "Joke at specified id retrieved successfully",
+                data: findJoke
             });
         }
-        res.json({
-            status: "success",
-            message: "Jokes retrieved successfully",
-            data: jokes
+        return res.status(404).json({
+            message: "Joke record not found",
         });
-    });
-};
+    }
 
-// Handle create joke actions (POST)
-exports.new = function (req, res) {
-    var joke = new Joke();
-    joke.title = req.body.title ? req.body.title : joke.title;
-    joke.joke = req.body.joke;
-    joke.author = req.body.author;
-    // save the joke and check for errors
-    joke.save(function (err) {
-        // if (err)
-        //     res.json(err);
-        res.json({
-            message: 'New joke created!',
-            data: joke
-        });
-    });
-};
+    // Post a new joke
+    static postNewJoke = async (req, res) => {
+        const findJoke = await Joke.findOne({ id: req.body.id });
+        if (findJoke) {
+            return res.status(404).json({
+                message: "Joke of this id has already been created before.",
+            });
+        } else {
+            var joke = new Joke();
+            joke.id = req.body.id;
+            joke.title = req.body.title;
+            joke.joke = req.body.joke;
+            joke.author = req.body.author;
+            joke.save(function (err) {
+                if (err) {
+                    return res.status(400).json({
+                        message: "Error saving joke to database",
+                    });
+                }
+                return res.json({
+                    message: 'New joke successfully created!',
+                    data: joke
+                });
+            });
+        }
+    }
 
-// Handle get joke info (find by Id)
-exports.view = function (req, res) {
-    Joke.findById(req.params.joke_id, function (err, joke) {
-        if (err)
-            res.send(err);
-        res.json({
-            message: 'Joke details loading..',
-            data: joke
-        });
-    });
-};
+    // Handle update joke info (UPDATE)
+    static updateExistingJoke = async (req, res) => {
+        const joke = await Joke.findOne({ id: req.body.id });
+        if (!findJoke) {
+            return res.status(404).json({
+                message: "There is no joke of specified id in the database at the moment.",
+            });
+        } else {
+            joke.title = req.body.title;
+            joke.joke = req.body.joke;
+            joke.author = req.body.author;
 
-// Handle update joke info (UPDATE)
-exports.update = function (req, res) {
-    Joke.findById(req.params.joke_id, function (err, joke) {
-        if (err)
-            res.send(err);
-        joke.title = req.body.title ? req.body.title : joke.title;
-        joke.joke = req.body.joke;
-        joke.author = req.body.author;
-        // save the joke and check for errors
-        joke.save(function (err) {
+            // save the joke and check for errors
+            joke.save(function (err) {
+                if (err)
+                    res.json(err);
+                res.json({
+                    message: 'Joke Info updated',
+                    data: joke
+                });
+            });
+        };
+    };
+
+    // Handle delete joke
+    static deleteExistingJoke(req, res) {
+        Joke.deleteOne({
+            'id': req.params.joke_id
+        }, function (err, joke) {
             if (err)
-                res.json(err);
+                res.send(err);
             res.json({
-                message: 'Joke Info updated',
-                data: joke
+                status: "success",
+                message: 'Joke deleted'
             });
         });
-    });
-};
+    };
+}
 
-// Handle delete joke
-exports.delete = function (req, res) {
-    Joke.deleteOne({
-        _id: req.params.joke_id
-    }, function (err, joke) {
-        if (err)
-            res.send(err);
-        res.json({
-            status: "success",
-            message: 'Joke deleted'
-        });
-    });
-};
+module.exports = JokeController;

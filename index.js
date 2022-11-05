@@ -1,14 +1,14 @@
 // Import express
-let express = require('express');
+const express = require('express');
 // Import Body parser
-let bodyParser = require('body-parser');
+const bodyParser = require('body-parser');
 // Import Mongoose
-let mongoose = require('mongoose');
+const mongoose = require('mongoose');
 // Initialise the app
-let app = express();
+const app = express();
 
 // Import routes
-let apiRoutes = require("./api_routes");
+let apiRoutes = require("./api_routes.js");
 // Configure bodyparser to handle post requests
 app.use(bodyParser.urlencoded({
     extended: true

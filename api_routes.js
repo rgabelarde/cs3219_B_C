@@ -1,6 +1,7 @@
 // Initialize express router
-let router = require('express').Router();
-// Set default API response
+const express = require('express');
+const router = express.Router()// Set default API response
+
 router.get('/', function (req, res) {
     res.json({
         status: 'API is Working',
@@ -8,15 +9,14 @@ router.get('/', function (req, res) {
     });
 });
 // Import joke controller
-var jokeController = require('./controllers/jokeController');
+const JokeController = require('./controllers/jokeController');
+
 // Joke routes
-router.route('/jokes/')
-    .get(jokeController.index)
-    .post(jokeController.new);
-router.route('/jokes/:joke_id')
-    .get(jokeController.view)
-    .patch(jokeController.update)
-    .put(jokeController.update)
-    .delete(jokeController.delete);
+router.get('/jokes/', (req, res) => JokeController.getAllJokes(req, res));
+router.post('/jokes/', JokeController.postNewJoke);
+router.get('/jokes/:joke_id', JokeController.getSingleJoke);
+router.patch('/jokes/:joke_id', JokeController.updateExistingJoke);
+router.delete('/jokes/:joke_id', JokeController.deleteExistingJoke);
+
 // Export API routes
 module.exports = router;
