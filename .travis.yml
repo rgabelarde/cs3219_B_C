@@ -1,0 +1,7 @@
+language: node_js
+script:
+  - echo '----Build started----'
+  - echo 'Installing Dependecies'
+  - npm install
+  - echo 'Running tests'
+  - npm test
