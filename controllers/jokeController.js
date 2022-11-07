@@ -62,40 +62,41 @@ class JokeController {
 
     // Handle update joke info (UPDATE)
     static updateExistingJoke = async (req, res) => {
-        const joke = await Joke.findOne({ id: req.body.id });
-        if (!findJoke) {
+        Joke.findOne({ id: req.params.joke_id })
+            .then(joke => {
+                joke.title = req.body.title || joke.title;
+                joke.joke = req.body.joke || joke.joke;
+                joke.author = req.body.author || joke.author;
+
+                joke
+                    .save()
+                    .then(() => res.status(200).json({ message: "The joke has been UPDATED succesfully!" }))
+                    .catch(err => res.status(400).json(`Error: ${err}`));
+            })
+            .catch(err => res.status(404).json(`Error: Can't find existing entry of ${req.params.joke_id}`));
+    };
+
+    // Handle delete joke
+    static deleteExistingJoke = async (req, res) => {
+        const joke = await Joke.findOne({ id: req.params.joke_id });
+        if (!joke) {
             return res.status(404).json({
                 message: "There is no joke of specified id in the database at the moment.",
             });
         } else {
-            joke.title = req.body.title;
-            joke.joke = req.body.joke;
-            joke.author = req.body.author;
-
-            // save the joke and check for errors
-            joke.save(function (err) {
+            Joke.deleteOne({
+                'id': req.params.joke_id
+            }, function (err, joke) {
                 if (err)
-                    res.json(err);
-                res.json({
-                    message: 'Joke Info updated',
-                    data: joke
+                    return res.status(400).json({
+                        message: "Failed to delete joke",
+                    });
+                res.status(200).json({
+                    status: "success",
+                    message: 'Joke deleted'
                 });
             });
-        };
-    };
-
-    // Handle delete joke
-    static deleteExistingJoke(req, res) {
-        Joke.deleteOne({
-            'id': req.params.joke_id
-        }, function (err, joke) {
-            if (err)
-                res.send(err);
-            res.json({
-                status: "success",
-                message: 'Joke deleted'
-            });
-        });
+        }
     };
 }
 

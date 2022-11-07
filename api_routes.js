@@ -12,7 +12,7 @@ router.get('/', function (req, res) {
 const JokeController = require('./controllers/jokeController');
 
 // Joke routes
-router.get('/jokes/', (req, res) => JokeController.getAllJokes(req, res));
+router.get('/jokes/', JokeController.getAllJokes);
 router.post('/jokes/', JokeController.postNewJoke);
 router.get('/jokes/:joke_id', JokeController.getSingleJoke);
 router.patch('/jokes/:joke_id', JokeController.updateExistingJoke);
