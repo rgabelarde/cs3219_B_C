@@ -5,3 +5,15 @@ script:
   - npm install
   - echo 'Running tests'
   - npm test
+
+language: node_js
+node_js:
+  - 'stable'
+install: npm install
+script: 
+  - echo '----Build started----'
+  - echo 'Installing Dependecies'
+  - npm install
+  - echo 'Running tests'
+  - npm test
+after_success: npm run coverage
