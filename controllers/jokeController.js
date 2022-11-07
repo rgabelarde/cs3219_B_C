@@ -35,14 +35,13 @@ class JokeController {
 
     // Post a new joke
     static postNewJoke = async (req, res) => {
-        const findJoke = await Joke.findOne({ id: req.body.id });
+        const findJoke = await Joke.findOne({ title: req.body.title });
         if (findJoke) {
             return res.status(404).json({
-                message: "Joke of this id has already been created before.",
+                message: "Joke of this title has already been created before.",
             });
         } else {
             var joke = new Joke();
-            joke.id = req.body.id;
             joke.title = req.body.title;
             joke.joke = req.body.joke;
             joke.author = req.body.author;

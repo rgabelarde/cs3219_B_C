@@ -15,7 +15,6 @@ describe("Jokes", () => {
                 .post('/api/jokes/')
                 .set('content-type', 'application/x-www-form-urlencoded')
                 .send({
-                    id: 1,
                     title: "test title",
                     joke: "testjoke",
                     author: "Jane Doe"
@@ -27,14 +26,13 @@ describe("Jokes", () => {
                 });
         });
 
-        it("should fail to post to jokes record due to duplicate id", (done) => {
+        it("should fail to post to jokes record due to joke of existing title already in database", (done) => {
             chai.request(app)
                 .post('/api/jokes/')
                 .set('content-type', 'application/x-www-form-urlencoded')
                 .send({
-                    id: 1,
-                    title: "test same id failure",
-                    joke: "testjoke",
+                    title: "test title",
+                    joke: "test should fail ha ha or something",
                     author: "Jane Doe"
                 })
                 .end((err, res) => {
@@ -48,7 +46,6 @@ describe("Jokes", () => {
                 .post('/api/jokes/')
                 .set('content-type', 'application/x-www-form-urlencoded')
                 .send({
-                    id: 2,
                     joke: "testjoke",
                     author: "Jane Doe"
                 })
