@@ -14,3 +14,11 @@ install:
 script:
   - npm test
 
+deploy:
+  provider: lambda
+  function_name: "lambda-test"
+  region: "us-east-1"
+  # arn:aws:iam::933145830531:role/aws-elasticbeanstalk-service-role
+  # role: "arn:aws:iam::0123456789012:role/lambda_basic_execution"
+  runtime: "nodejs12.x"
+  handler_name: "handler"
