@@ -3,20 +3,14 @@ const Joke = require('../models/jokeModel');
 
 class JokeController {
     // Get all jokes
-    static getAllJokes(req, res) {
-        Joke.get(function (err, jokes) {
-            if (err) {
-                return res.status(404).json({
-                    message: "Joke record not found",
-                });
-            } else {
-                return res.status(200).json({
-                    message: "Jokes retrieved successfully",
-                    data: jokes
-                });
-            }
-        });
-
+    static getAllJokes = async (req, res) => {
+        try {
+            const jokes = await Joke.find({});
+            return res.status(200).json(jokes);
+        } catch (error) {
+            console.log(error)
+            return res.status(404).json({ message: "No entries yet." });
+        }
     }
 
     // Get a single joke
@@ -69,7 +63,7 @@ class JokeController {
 
                 joke
                     .save()
-                    .then(() => res.status(200).json({ message: "The joke has been UPDATED succesfully!" }))
+                    .then(() => res.status(200).json({ message: "The joke has been UPDATED succesfully!", data: joke }))
                     .catch(err => res.status(400).json(`Error: ${err}`));
             })
             .catch(err => res.status(404).json(`Error: Can't find existing entry of ${req.params.joke_id}`));
