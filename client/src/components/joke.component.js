@@ -24,7 +24,8 @@ class Joke extends Component {
   }
 
   componentDidMount() {
-    this.getJoke(this.props.router.params.id);
+    console.log("_id: " + this.props.router.params.currentJoke._id);
+    this.getJoke(this.props.router.params.currentJoke._id);
   }
 
   onChangeTitle(e) {
@@ -102,7 +103,7 @@ class Joke extends Component {
       author: this.state.currentJoke.author
     };
 
-    JokeDataService.update(this.state.currentJoke.id, data)
+    JokeDataService.update(this.state.currentJoke._id, data)
       .then(response => {
         this.setState(
           {
@@ -119,7 +120,7 @@ class Joke extends Component {
   }
 
   deleteJoke() {
-    JokeDataService.delete(this.state.currentJoke.id)
+    JokeDataService.delete(this.state.currentJoke._id)
       .then(response => {
         console.log(response.data);
         this.props.router.navigate('/jokes');

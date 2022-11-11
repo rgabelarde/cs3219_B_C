@@ -60,17 +60,6 @@ export default class JokesList extends Component {
     });
   }
 
-  removeAllJokes() {
-    JokeDataService.deleteAll()
-      .then(response => {
-        console.log(response.data);
-        this.refreshList();
-      })
-      .catch(e => {
-        console.log(e);
-      });
-  }
-
   searchTitle() {
     this.setState({
       currentJoke: null,
@@ -157,7 +146,7 @@ export default class JokesList extends Component {
               </div>
 
               <Link
-                to={"/jokes/" + currentJoke.id}
+                to={"/jokes/" + currentJoke._id}
                 className="badge badge-warning"
               >
                 Edit

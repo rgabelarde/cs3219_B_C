@@ -21,12 +21,31 @@ router.delete('/user/delete', authenticateUser, UserController.deleteUser);
 router.post('/user/login', UserController.userLogin);
 router.post('/user/register', UserController.registerUser);
 
+
+const deleteAllData = async () => {
+    try {
+        await Joke.deleteMany({});
+        console.log("Database cleared.")
+        res.status(200).json({
+            status: "success",
+            message: 'Database successfully cleared'
+        });
+    } catch (err) {
+        return res.status(500).json({
+            message: "Failed to clear database",
+        });
+
+    };
+
+}
+
 // Joke routes
 router.get('/jokes/', JokeController.getAllJokes);
 router.post('/jokes/', JokeController.postNewJoke);
 router.get('/jokes/:joke_id', JokeController.getSingleJoke);
 router.patch('/jokes/:joke_id', JokeController.updateExistingJoke);
 router.delete('/jokes/:joke_id', JokeController.deleteExistingJoke);
+router.delete('jokes/delete/all', deleteAllData);
 
 // Export API routes
 module.exports = router;
