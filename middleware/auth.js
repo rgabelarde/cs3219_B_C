@@ -1,4 +1,3 @@
-const userModel = require('../models/userModel');
 const jwt = require('jsonwebtoken');
 
 exports.authenticateUser = (req, res, next) => {

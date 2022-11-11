@@ -78,7 +78,7 @@ exports.getLoggedInUser = async (req, res) => {
     }
 }
 
-// function to get all existing user info
+// function to get all existing user info -> limited to admins only 
 exports.getAllUsers = async (req, res) => {
     try {
         const users = await User.find({});
