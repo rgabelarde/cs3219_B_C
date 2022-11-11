@@ -20,7 +20,7 @@ exports.authenticateUser = (req, res, next) => {
         req.user = verifiedUser; // user_id & user_type_id
         next();
     } catch (error) {
-        res.status(400).send("Invalid Token");
+        res.status(401).send("Invalid Token");
     }
 }
 
@@ -28,7 +28,7 @@ exports.isUserOrAdmin = async (req, res, next) => {
     if (req.user.user_type_id === 0 || req.user.user_type_id === 1) {
         next();
     } else {
-        return res.status(401).send("Unauthorized, please login!");
+        return res.status(403).send("Unauthorized, please login!");
     }
 }
 
@@ -36,7 +36,7 @@ exports.isUser = async (req, res, next) => {
     if (req.user.user_type_id === 0) {
         next();
     } else {
-        return res.status(401).send("Unauthorized, this action requires you to login!");
+        return res.status(403).send("Unauthorized, this action requires you to login!");
     }
 }
 
@@ -44,6 +44,6 @@ exports.isAdmin = async (req, res, next) => {
     if (req.user.user_type_id === 1) {
         next();
     } else {
-        return res.status(401).send("Unauthorized, require admin rights!");
+        return res.status(403).send("Unauthorized, require admin rights!");
     }
 }
