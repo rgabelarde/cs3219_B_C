@@ -4,22 +4,30 @@ const express = require('express');
 const bodyParser = require('body-parser');
 // Import Mongoose
 const mongoose = require('mongoose');
+
 const dotenv = require('dotenv/config');
+const cookieParser = require('cookie-parser');
+const cors = require('cors')
+
 // Import routes
 let apiRoutes = require("./api_routes.js");
 
-const cors = require('cors')
 // Initialise the app
 const app = express();
-app.use(express.urlencoded({ extended: true }))
-app.use(express.json())
-app.use(cors())
+
+// config cookie-parser
+app.use(cookieParser());
+
 // config cors so that front-end can use
+app.use(cors())
 app.options((req, res, next) => {
-    es.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET, PUT, PATCH, POST, DELETE, OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
 }, cors())
+
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
 
 // Configure bodyparser to handle post requests
 app.use(bodyParser.urlencoded({
