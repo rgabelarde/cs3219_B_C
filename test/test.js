@@ -8,6 +8,7 @@ const app = require('../index');
 chai.use(chaiHttp);
 chai.should();
 var dummyId;
+var usedTitle;
 
 describe("Jokes", () => {
     describe("POST TO EMPTY /", () => {
@@ -22,9 +23,9 @@ describe("Jokes", () => {
                     author: "Jane Doe"
                 })
                 .end((err, res) => {
-                    console.log(res);
                     res.should.have.status(200);
                     dummyId = res.body.data._id;
+                    usedTitle = res.body.data.title;
                     res.body.should.be.a('object');
                     done();
                 });
@@ -35,12 +36,12 @@ describe("Jokes", () => {
                 .post('/api/jokes/')
                 .set('content-type', 'application/x-www-form-urlencoded')
                 .send({
-                    title: "test title",
+                    title: usedTitle,
                     joke: "test should fail ha ha or something",
                     author: "Jane Doe"
                 })
                 .end((err, res) => {
-                    res.should.have.status(404);
+                    res.should.have.status(500);
                     done();
                 });
         });
@@ -54,7 +55,7 @@ describe("Jokes", () => {
                     author: "Jane Doe"
                 })
                 .end((err, res) => {
-                    res.should.have.status(400);
+                    res.should.have.status(500);
                     done();
                 });
         });

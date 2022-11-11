@@ -5,7 +5,8 @@ var AutoIncrement = require('mongoose-sequence')(mongoose);
 var jokeSchema = mongoose.Schema({
     title: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     joke: {
         type: String,

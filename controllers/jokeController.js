@@ -33,26 +33,25 @@ class JokeController {
 
     // Post a new joke
     static postNewJoke = async (req, res) => {
-        const findJoke = await Joke.findOne({ title: req.body.title });
-        if (findJoke) {
-            return res.status(404).json({
-                message: "Joke of this title has already been created before.",
-            });
-        } else {
+        try {
             var joke = new Joke();
             joke.title = req.body.title;
             joke.joke = req.body.joke;
             joke.author = req.body.author;
             joke.save(function (err) {
                 if (err) {
-                    return res.status(400).json({
+                    return res.status(500).json({
                         message: "Error saving joke to database",
                     });
                 }
-                return res.json({
+                return res.status(200).json({
                     message: 'New joke successfully created!',
                     data: joke
                 });
+            });
+        } catch (err) {
+            return res.status(500).json({
+                message: err
             });
         }
     }
