@@ -9,7 +9,6 @@ export default class JokesList extends Component {
     this.retrieveJokes = this.retrieveJokes.bind(this);
     this.refreshList = this.refreshList.bind(this);
     this.setActiveJoke = this.setActiveJoke.bind(this);
-    this.removeAllJokes = this.removeAllJokes.bind(this);
     this.searchTitle = this.searchTitle.bind(this);
 
     this.state = {

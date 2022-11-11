@@ -71,8 +71,9 @@ export default class AddJoke extends Component {
         {this.state.submitted ? (
           <div>
             <h4>You submitted successfully!</h4>
+
             <button className="btn btn-success" onClick={this.newJoke}>
-              Add
+              Add Another Joke
             </button>
           </div>
         ) : (
